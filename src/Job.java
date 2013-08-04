@@ -28,6 +28,14 @@ public class Job implements Comparable {
         }
     }
 
+    public String getClientName() {
+        return clientName;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
     public List<Task> getJobTasks() {
         return jobTasks;
     }

@@ -17,13 +17,14 @@ public class Cluster extends Thread {
     private ExecutorService executorService;
     private List<Node> nodes = new ArrayList<Node>();
     private PriorityBlockingQueue<Job> jobs = new PriorityBlockingQueue<Job>();
+    private TaskScheduler taskScheduler = new TaskScheduler();
 
     public Cluster() {
         executorService = Executors.newFixedThreadPool(CLUSTER_SIZE);
         setDaemon(true);
         start();
         for(int i=0;i<CLUSTER_SIZE;i++) {
-            nodes.add(new Node("Node-" + i));
+            nodes.add(new Node("Node-" + i, taskScheduler));
             executorService.execute(nodes.get(i));
         }
         System.out.println("Cluster Initialized with Size - " + CLUSTER_SIZE);
@@ -31,15 +32,16 @@ public class Cluster extends Thread {
 
     public synchronized  void addJob(Job newJob) {
         jobs.add(newJob);
+        taskScheduler.addTasks(newJob);
 
         // Add task to Nodes
-        List<Task> tasks = newJob.getJobTasks();
-        for(Task task: tasks) {
-            if(index >= 4)
-                index  = 0;
-
-            nodes.get(index++).addTask(task);
-        }
+//        List<Task> tasks = newJob.getJobTasks();
+//        for(Task task: tasks) {
+//            if(index >= 4)
+//                index  = 0;
+//
+//            nodes.get(index++).addTask(task);
+//        }
 //        notifyAll();
     }
 

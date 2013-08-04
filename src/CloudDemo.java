@@ -86,5 +86,6 @@ public class CloudDemo {
         print("4. Change Job Priority {Client JobName Priority(LOW|HIGH)}");
         print("5. Print Progress");
         print("6. Print Cluster Load");
+        print("-------------------------------------------------------");
     }
 }
