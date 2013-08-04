@@ -30,6 +30,45 @@ public class Cluster extends Thread {
         System.out.println("Cluster Initialized with Size - " + CLUSTER_SIZE);
     }
 
+    public synchronized  void raiseJob(Job jobToRaise) {
+        if(jobs.contains(jobToRaise)) {
+            taskScheduler.raiseJob(jobToRaise);
+            Job[] allJobs = getJobs();
+            for(Job job: allJobs) {
+                if(job.equals(jobToRaise))
+                    job.raisePriority();
+            }
+        } else {
+            System.out.println("Job does not exist - " + jobToRaise);
+        }
+    }
+
+    public synchronized  void lowerJob(Job jobToLower) {
+        if(jobs.contains(jobToLower)) {
+            taskScheduler.lowerJob(jobToLower);
+            Job[] allJobs = getJobs();
+            for(Job job: allJobs) {
+                if(job.equals(jobToLower))
+                    job.lowerPriority();
+            }
+        } else {
+            System.out.println("Job does not exist - " + jobToLower);
+        }
+    }
+
+    public synchronized void killJob(Job jobToKill) {
+        if(jobs.contains(jobToKill)) {
+            taskScheduler.killJob(jobToKill);
+            Job[] allJobs = getJobs();
+            for(Job job: allJobs) {
+                if(job.equals(jobToKill))
+                    job.kill();
+            }
+        } else {
+            System.out.println("Job does not exist - " + jobToKill);
+        }
+    }
+
     public synchronized  void addJob(Job newJob) {
         jobs.add(newJob);
         taskScheduler.addTasks(newJob);

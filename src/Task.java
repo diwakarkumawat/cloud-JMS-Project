@@ -5,7 +5,7 @@
  * Time: 2:09 PM
  * To change this template use File | Settings | File Templates.
  */
-public class Task implements Comparable {
+public class Task implements Comparable<Task> {
     private String clientName;
     private String jobNumber;
     private Long taskWorkLoad;
@@ -42,15 +42,24 @@ public class Task implements Comparable {
     }
 
     @Override
-    public int compareTo(Object o) {
-        if(! (o instanceof  Task))
-            return -1;
-
+    public boolean equals(Object o) {
         Task other = (Task) o;
+
+        return this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber);
+    }
+
+
+    @Override
+    public int compareTo(Task other) {
 
         if(this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber))
             return 0;
 
         return 1;
     }
+
+    public int hashCode() {
+        return clientName.hashCode() + jobNumber.hashCode();
+    }
+
 }

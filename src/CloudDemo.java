@@ -48,9 +48,30 @@ public class CloudDemo {
             progress();
         }
 
+        if(command == 2) {
+            print("Enter Job To Kill {ClientName JobName");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.killJob(new Job(stk.nextToken(), stk.nextToken(), null));
+        }
+
+        if(command == 3) {
+            print("Enter Job to Lower Priority {ClientName JobName}");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.lowerJob(new Job(stk.nextToken(), stk.nextToken(), null));
+        }
+
+        if(command == 4) {
+            print("Enter Job to Raise Priority {ClientName JobName}");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.raiseJob(new Job(stk.nextToken(), stk.nextToken(), null));
+        }
+
         if(command == 0) {
             print("Shutting Off JMS. GoodBye.");
-            continued = false;
+            System.exit(0);
             break;
         }
 
@@ -80,10 +101,10 @@ public class CloudDemo {
         print("");
         print("-------------- Cloud JMS System Menu -----------------");
         print("0. Exit");
-        print("1. Enter a New Job {Client JobName WorkLoad}");
-        print("2. Kill an existing Job {Client JobName Kill}");
-        print("3. Check Current Job Statuses");
-        print("4. Change Job Priority {Client JobName Priority(LOW|HIGH)}");
+        print("1. Enter a New Job");
+        print("2. Kill an existing Job");
+        print("3. Lower Job Priority");
+        print("4. Raise Job Priority");
         print("5. Print Progress");
         print("6. Print Cluster Load");
         print("-------------------------------------------------------");
