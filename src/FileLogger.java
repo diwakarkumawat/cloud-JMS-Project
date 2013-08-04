@@ -7,8 +7,8 @@ import java.util.logging.Logger;
  */
 public class FileLogger {
 
-    private static final Logger logger = Logger.getLogger(FileLogger.class.getName());
-    private FileHandler fileHandler;
+    static final Logger logger = Logger.getLogger(FileLogger.class.getName());
+    FileHandler fileHandler;
 
     public FileLogger() {
         /*
@@ -19,6 +19,10 @@ public class FileLogger {
          * the main method to initialize the handler. (See below)
          */
         addFileHandler(logger);
+    }
+
+    public static void info(String msg) {
+        logger.info(msg);
     }
 
     /**
@@ -50,12 +54,12 @@ public class FileLogger {
 
         // Example logging.
         logger.info("Logging for fun and profit");
-        logger.fine("Fine...");
-        logger.finer("Finer...");
-        logger.finest("Finest...");
-        logger.warning("Warning...");
-        logger.severe("Severe...");
-        logger.info("Logging complete.");
+//        logger.fine("Fine...");
+//        logger.finer("Finer...");
+//        logger.finest("Finest...");
+//        logger.warning("Warning...");
+//        logger.severe("Severe...");
+//        logger.info("Logging complete.");
     }
 
     /**
@@ -64,7 +68,7 @@ public class FileLogger {
      */
     private void addFileHandler(Logger logger) {
         try {
-            fileHandler = new FileHandler(FileLogger.class.getName() + ".log");
+            fileHandler = new FileHandler("jms.log");
         } catch (IOException ex) {
             logger.log(Level.SEVERE, null, ex);
         } catch (SecurityException ex) {

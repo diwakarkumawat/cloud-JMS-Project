@@ -1,6 +1,7 @@
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.List;
+import java.util.StringTokenizer;
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,10 +12,16 @@ import java.util.List;
  */
 public class CloudDemo {
 
+    static Cluster cluster;
+
     public static void main(String [] args) throws Exception {
 
     String eoi = null;// end of input
     BufferedReader br = (new BufferedReader(new InputStreamReader(System.in)));
+    String input = null;
+    boolean continued = true;
+    FileLogger fileLogger = new FileLogger();
+    cluster = new Cluster();
     do {
         printMenu();
         //eoi = c.readLine("Enter input (type end to End Program): ");
@@ -28,18 +35,41 @@ public class CloudDemo {
             continue;
         }
 
-        if(command < 0 || command > 4) {
+        if(command < 0 || command > 6) {
             print("Invalid Command. Try Again.");
             continue;
         }
 
+        if(command == 6) {
+            print(cluster.getClusterLoad());
+        }
+
+        if(command == 5) {
+            progress();
+        }
+
         if(command == 0) {
             print("Shutting Off JMS. GoodBye.");
+            continued = false;
             break;
         }
 
-    }while(true);
+        if(command == 1) {
+            print("Enter a New Job...");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.addJob(new Job(stk.nextToken(), stk.nextToken(), Long.parseLong(stk.nextToken())));
+        }
 
+    }while(continued);
+
+    }
+
+    private static void progress() {
+        Job[] jobs = cluster.getJobs();
+        for(Job job: jobs) {
+            print(job.getProgress());
+        }
     }
 
     private static void print(String msg) {
@@ -47,11 +77,14 @@ public class CloudDemo {
     }
 
     private  static void printMenu() {
-        print("Cloud JMS System Menu");
+        print("");
+        print("-------------- Cloud JMS System Menu -----------------");
         print("0. Exit");
         print("1. Enter a New Job {Client JobName WorkLoad}");
         print("2. Kill an existing Job {Client JobName Kill}");
         print("3. Check Current Job Statuses");
         print("4. Change Job Priority {Client JobName Priority(LOW|HIGH)}");
+        print("5. Print Progress");
+        print("6. Print Cluster Load");
     }
 }
