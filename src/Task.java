@@ -9,11 +9,13 @@ public class Task implements Comparable<Task> {
     private String clientName;
     private String jobNumber;
     private Long taskWorkLoad;
+    private Integer taskId;
     private Status status = Status.NOT_STARTED;
 
-    public Task(String clientName, String jobNumber, Long taskWorkLoad) {
+    public Task(String clientName, String jobNumber, int taskId, Long taskWorkLoad) {
         this.clientName = clientName;
         this.jobNumber = jobNumber;
+        this.taskId = taskId;
         this.taskWorkLoad = taskWorkLoad;
     }
 
@@ -37,6 +39,10 @@ public class Task implements Comparable<Task> {
         return jobNumber;
     }
 
+    public Integer getTaskId() {
+        return taskId;
+    }
+
     public Long getTaskWorkLoad() {
         return taskWorkLoad;
     }
@@ -45,21 +51,23 @@ public class Task implements Comparable<Task> {
     public boolean equals(Object o) {
         Task other = (Task) o;
 
-        return this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber);
+        return this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber)
+                && this.taskId == other.taskId;
     }
 
 
     @Override
     public int compareTo(Task other) {
 
-        if(this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber))
+        if(this.clientName.equals(other.clientName) && this.jobNumber.equals(other.jobNumber)
+                && this.taskId == other.taskId)
             return 0;
 
         return 1;
     }
 
     public int hashCode() {
-        return clientName.hashCode() + jobNumber.hashCode();
+        return clientName.hashCode() + jobNumber.hashCode() + taskId.hashCode();
     }
 
 }

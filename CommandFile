@@ -13,7 +13,7 @@ Cluster Initialized with Size - 4
 -------------------------------------------------------
 Enter input (type end to End Program): 1
 Enter a New Job...
-A aaa 500
+A aaa 1200
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -26,7 +26,7 @@ A aaa 500
 -------------------------------------------------------
 Enter input (type end to End Program): 1
 Enter a New Job...
-B bbb 400
+B bbb 200
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -38,24 +38,10 @@ B bbb 400
 6. Print Cluster Load
 -------------------------------------------------------
 Enter input (type end to End Program): 5
-[A.aaa.500.STARTED.EQUAL] ....................................................................................................STARTED
-[B.bbb.400.STARTED.EQUAL] ....................................................................................................STARTED
 
--------------- Cloud JMS System Menu -----------------
-0. Exit
-1. Enter a New Job
-2. Kill an existing Job
-3. Lower Job Priority
-4. Raise Job Priority
-5. Print Progress
-6. Print Cluster Load
--------------------------------------------------------
-Enter input (type end to End Program): 6
-{Node-0} - B.bbb
-{Node-1} - A.aaa
-{Node-2} - B.bbb
-{Node-3} - A.aaa
-
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.NOT_STARTED.EQUAL]           |||.................................................................................................                 3.0%
+[B.bbb.200.NOT_STARTED.EQUAL]            ....................................................................................................                 0.0%
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -68,20 +54,7 @@ Enter input (type end to End Program): 6
 -------------------------------------------------------
 Enter input (type end to End Program): 1
 Enter a New Job...
-C ccc 300
-
--------------- Cloud JMS System Menu -----------------
-0. Exit
-1. Enter a New Job
-2. Kill an existing Job
-3. Lower Job Priority
-4. Raise Job Priority
-5. Print Progress
-6. Print Cluster Load
--------------------------------------------------------
-Enter input (type end to End Program): 2
-Enter Job To Kill {ClientName JobName
-A aaa
+C ccc 1000
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -93,9 +66,11 @@ A aaa
 6. Print Cluster Load
 -------------------------------------------------------
 Enter input (type end to End Program): 5
-[A.aaa.500.KILLED.EQUAL] ||||||||||||||||....................................................................................KILLED
-[B.bbb.400.STARTED.EQUAL] ||||||||||..........................................................................................STARTED
-[C.ccc.300.STARTED.EQUAL] ....................................................................................................STARTED
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               |||||...............................................................................................                 5.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||..........................................................................................                10.0%
+[C.ccc.1000.NOT_STARTED.EQUAL]           ....................................................................................................                 0.0%
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -120,22 +95,11 @@ C ccc
 6. Print Cluster Load
 -------------------------------------------------------
 Enter input (type end to End Program): 5
-[A.aaa.500.KILLED.EQUAL] ||||||||||||||||||..................................................................................KILLED
-[B.bbb.400.STARTED.EQUAL] ||||||||||||||||||||................................................................................STARTED
-[C.ccc.300.STARTED.HIGH] ||||||||||..........................................................................................STARTED
 
--------------- Cloud JMS System Menu -----------------
-0. Exit
-1. Enter a New Job
-2. Kill an existing Job
-3. Lower Job Priority
-4. Raise Job Priority
-5. Print Progress
-6. Print Cluster Load
--------------------------------------------------------
-Enter input (type end to End Program): 3
-Enter Job to Lower Priority {ClientName JobName}
-B bbb
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||..............................................................................................                 6.0%
+[B.bbb.200.STARTED.EQUAL]                |||||||||||||||||||||||||...........................................................................                25.0%
+[C.ccc.1000.STARTED.HIGH]                |||.................................................................................................                 3.0%
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -147,25 +111,11 @@ B bbb
 6. Print Cluster Load
 -------------------------------------------------------
 Enter input (type end to End Program): 5
-[A.aaa.500.KILLED.EQUAL] ||||||||||||||||||..................................................................................KILLED
-[B.bbb.400.STARTED.LOW] |||||||||||||||||||||||||...........................................................................STARTED
-[C.ccc.300.STARTED.HIGH] ||||||||||||||||....................................................................................STARTED
 
--------------- Cloud JMS System Menu -----------------
-0. Exit
-1. Enter a New Job
-2. Kill an existing Job
-3. Lower Job Priority
-4. Raise Job Priority
-5. Print Progress
-6. Print Cluster Load
--------------------------------------------------------
-Enter input (type end to End Program): 6
-{Node-0} - C.ccc
-{Node-1} - B.bbb
-{Node-2} - B.bbb
-{Node-3} - C.ccc
-
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||..............................................................................................                 6.0%
+[B.bbb.200.STARTED.EQUAL]                |||||||||||||||||||||||||...........................................................................                25.0%
+[C.ccc.1000.STARTED.HIGH]                |||.................................................................................................                 3.0%
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -177,9 +127,152 @@ Enter input (type end to End Program): 6
 6. Print Cluster Load
 -------------------------------------------------------
 Enter input (type end to End Program): 5
-[A.aaa.500.KILLED.EQUAL] ||||||||||||||||||..................................................................................KILLED
-[B.bbb.400.STARTED.LOW] ||||||||||||||||||||||||||||||......................................................................STARTED
-[C.ccc.300.STARTED.HIGH] |||||||||||||||||||||||.............................................................................STARTED
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.STARTED.HIGH]                ||||................................................................................................                 4.0%
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 1
+Enter a New Job...
+D ded 40
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.STARTED.HIGH]                ||||||||............................................................................................                 8.0%
+[D.ded.40.NOT_STARTED.EQUAL]             ....................................................................................................                 0.0%
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 4
+Enter Job to Raise Priority {ClientName JobName}
+D ded
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.STARTED.HIGH]                ||||||||||||........................................................................................                12.0%
+[D.ded.40.STARTED.HIGH]                  ....................................................................................................                 0.0%
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.STARTED.HIGH]                ||||||||||||||||....................................................................................                16.0%
+[D.ded.40.STARTED.HIGH]                  ....................................................................................................                 0.0%
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.STARTED.HIGH]                ||||||||||||||||....................................................................................                16.0%
+[D.ded.40.STARTED.HIGH]                  ....................................................................................................                 0.0%
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 2
+Enter Job To Kill {ClientName JobName
+C ccc
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.KILLED.HIGH]                 ||||||||||||||||||||................................................................................               KILLED
+[D.ded.40.STARTED.HIGH]                  ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||            COMPLETED
+
+-------------- Cloud JMS System Menu -----------------
+0. Exit
+1. Enter a New Job
+2. Kill an existing Job
+3. Lower Job Priority
+4. Raise Job Priority
+5. Print Progress
+6. Print Cluster Load
+-------------------------------------------------------
+Enter input (type end to End Program): 5
+
+Client.Job.WorkLoad.Status.Priority      Progress                                                                                                 Percent Complete
+[A.aaa.1200.STARTED.EQUAL]               ||||||||............................................................................................                 8.0%
+[B.bbb.200.STARTED.EQUAL]                ||||||||||||||||||||||||||||||......................................................................                30.0%
+[C.ccc.1000.KILLED.HIGH]                 ||||||||||||||||||||||||............................................................................               KILLED
+[D.ded.40.COMPLETED.HIGH]                ||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||            COMPLETED
 
 -------------- Cloud JMS System Menu -----------------
 0. Exit
@@ -192,3 +285,4 @@ Enter input (type end to End Program): 5
 -------------------------------------------------------
 Enter input (type end to End Program): 0
 Shutting Off JMS. GoodBye.
+lgml-dkumawat2:src dkumawat$

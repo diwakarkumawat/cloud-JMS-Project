@@ -19,40 +19,37 @@ public class Node implements Runnable {
     }
 
     public String getNodeLoad() {
-        StringBuffer sb = new StringBuffer("{" + name + "} - ");
+        StringBuffer sb = new StringBuffer("{" + name + "}: ");
         if(task != null)
-            sb.append(task.getClientName() + "." + task.getJobNumber());
+            sb.append(task.getClientName() + "." + task.getJobNumber() + "." + task.getTaskId());
         else
             sb.append(" No Task.");
 
-////        int size = taskQueue.size();
-//        for(int i=0;i<size;i++)
-//            sb.append("*");
         return sb.toString();
     }
 
+    public String getPercentComplete() {
+        return String.valueOf(percentComplete) + "%";
+    }
+
+    private float percentComplete = 0;
 
     @Override
     public void run() {
-
-//        synchronized (this) {
-//            // Simulate the work by Sleeping for Task.
-//            if(taskQueue.isEmpty()) {
-//                try {
-//                    wait();
-//                }catch(InterruptedException ix) {
-//                    System.out.print(ix);
-//                }
-//            }
-//        }
 
         do {
 
             // Keep working on tasks
                 task = taskScheduler.nextTask();
                 if(task != null && !task.isComplete()) {
+                    percentComplete = 0;
+                    long size = task.getTaskWorkLoad();
+
                     try {
-                        Thread.sleep(task.getTaskWorkLoad() * 500);
+                        for(int i=0;i<size;i++) {
+                            Thread.sleep(1000);
+                            percentComplete = 100 * i/size;
+                        }
                         task.setComplete();
                     }catch(InterruptedException ix) {
                         System.out.println(ix);

@@ -25,7 +25,7 @@ public class CloudDemo {
     do {
         printMenu();
         //eoi = c.readLine("Enter input (type end to End Program): ");
-        System.out.print("Enter input (type end to End Program): ");
+        System.out.print("Enter Menu Number (type 0 to End Program): ");
         eoi = br.readLine();
         int command = -1;
         try {
@@ -41,7 +41,8 @@ public class CloudDemo {
         }
 
         if(command == 6) {
-            print(cluster.getClusterLoad());
+            //print(cluster.getClusterLoad());
+            cluster.printLoad();
         }
 
         if(command == 5) {
@@ -76,7 +77,7 @@ public class CloudDemo {
         }
 
         if(command == 1) {
-            print("Enter a New Job...");
+            print("Enter a New Job {ClientName JobName WorkLoad(seconds)} ...");
             input = br.readLine();
             StringTokenizer stk = new StringTokenizer(input);
             cluster.addJob(new Job(stk.nextToken(), stk.nextToken(), Long.parseLong(stk.nextToken())));
@@ -88,8 +89,11 @@ public class CloudDemo {
 
     private static void progress() {
         Job[] jobs = cluster.getJobs();
+        System.out.println();
+        System.out.printf("%-40s %-100s %20s %n", "Client.Job.WorkLoad.Status.Priority", "Progress", "Percent Complete");
+
         for(Job job: jobs) {
-            print(job.getProgress());
+            System.out.printf("%-40s %100s %20s %n", job.getJobDetail(), job.getProgress(), job.getPercentComplete());
         }
     }
 

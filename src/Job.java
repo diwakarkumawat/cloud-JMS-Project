@@ -27,9 +27,13 @@ public class Job implements Comparable<Job> {
         long taskCount = jobWorkLoad/10;
         // Create Tasks
         for(int i=0;i<taskCount;i++) {
-            Task task = new Task(clientName, jobName, 10L);
+            Task task = new Task(clientName, jobName, i, 10L);
             jobTasks.add(task);
         }
+    }
+
+    public Priority getPriority() {
+        return priority;
     }
 
     public String getClientName() {
@@ -45,11 +49,17 @@ public class Job implements Comparable<Job> {
     }
 
     public void raisePriority() {
-        priority = Priority.HIGH;
+        if(priority.equals(Priority.LOW))
+            priority = Priority.EQUAL;
+        else if(priority.equals(Priority.EQUAL))
+            priority = Priority.HIGH;
     }
 
     public void lowerPriority() {
-        priority = Priority.LOW;
+        if(priority.equals(Priority.HIGH))
+            priority = Priority.EQUAL;
+        else if(priority.equals(Priority.EQUAL))
+            priority = Priority.LOW;
     }
 
     public void kill() {
@@ -72,6 +82,13 @@ public class Job implements Comparable<Job> {
         return true;
     }
 
+    public String getJobDetail() {
+        StringBuffer sb = new StringBuffer("[" + clientName + "." + jobName + "." + jobWorkLoad +
+                "." + status.name() + "." + priority.name() +"] ");
+
+        return sb.toString();
+    }
+
     public String getProgress() {
         isComplete();
         int completed = 0;
@@ -83,8 +100,8 @@ public class Job implements Comparable<Job> {
 
         float percentComplete = 100 * completed/size;
 
-        StringBuffer sb = new StringBuffer("[" + clientName + "." + jobName + "." + jobWorkLoad +
-                 "." + status.name() + "." + priority.name() +"] ");
+
+        StringBuffer sb = new StringBuffer();
 
         int i = 0;
         for(;i<percentComplete;i++)
@@ -93,7 +110,23 @@ public class Job implements Comparable<Job> {
         for(;i<100;i++)
             sb.append(".");
 
-        sb.append(status.name());
+        return sb.toString();
+    }
+
+    public String getPercentComplete() {
+        int size = jobTasks.size();
+        int completed = 0;
+        for(Task task: jobTasks)
+            if(task.isComplete())
+                completed++;
+
+        float percentComplete = 100 * completed/size;
+
+        StringBuffer sb = new StringBuffer();
+        if(status.equals(Status.KILLED) || status.equals(Status.COMPLETED))
+            sb.append(status.name());
+        else
+            sb.append(" " + percentComplete + "%");
 
         return sb.toString();
     }

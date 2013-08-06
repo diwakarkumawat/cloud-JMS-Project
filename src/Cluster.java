@@ -72,26 +72,26 @@ public class Cluster extends Thread {
     public synchronized  void addJob(Job newJob) {
         jobs.add(newJob);
         taskScheduler.addTasks(newJob);
-
-        // Add task to Nodes
-//        List<Task> tasks = newJob.getJobTasks();
-//        for(Task task: tasks) {
-//            if(index >= 4)
-//                index  = 0;
-//
-//            nodes.get(index++).addTask(task);
-//        }
-//        notifyAll();
     }
 
     public Job[] getJobs() {
         return jobs.toArray(new Job[0]);
     }
 
+    public void printLoad() {
+        System.out.println();
+        System.out.printf("%-50s %20s %n", "Node-Id.Client.JobName.TaskId", "Percent Complete");
+
+        for(Node node: nodes) {
+            System.out.printf("%-50s %20s %n", node.getNodeLoad(), node.getPercentComplete());
+        }
+    }
+
     public String getClusterLoad() {
         StringBuffer sb = new StringBuffer();
         for(Node n: nodes) {
             sb.append(n.getNodeLoad());
+            sb.append(" ").append(n.getPercentComplete());
             sb.append("\r\n");
         }
         return sb.toString();
@@ -107,23 +107,6 @@ public class Cluster extends Thread {
     @Override
     public void run() {
         do {
-            // Print Progress
-
-//            synchronized (this) {
-//                if(jobs.isEmpty())
-//                    try {
-//                        wait();
-//                    }catch(InterruptedException ix) {
-//                        ix.printStackTrace();
-//                    }
-//            }
-
-            // check if complete
-//            for(Job job: jobs) {
-//                if(job.isComplete())
-//                    jobs.remove(job);
-//            }
-
             try {
                 Thread.sleep(1000);
             } catch(InterruptedException ix) {
