@@ -11,6 +11,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class TaskScheduler {
     private Map<String, PriorityBlockingQueue<Task>> mapClientToTaskList = new HashMap<String, PriorityBlockingQueue<Task>>();
     private List<String> keys = new ArrayList<String>();
+    private List<String> pausedJobs = new ArrayList<String>();
     private Map<String, Priority> priorityMap =  new HashMap<String, Priority>();
     private Map<Priority, List<String>> jobsByPriorityMap = new HashMap<Priority, List<String>>();
     private static int index = 0;
@@ -40,6 +41,14 @@ public class TaskScheduler {
             jobsByPriorityMap.get(Priority.LOW).remove(getKey(job));
             jobsByPriorityMap.get(Priority.EQUAL).add(getKey(job));
         }
+    }
+
+    public synchronized void pauseJob(Job job) {
+        pausedJobs.add(getKey(job));
+    }
+
+    public synchronized void resumeJob(Job job) {
+        pausedJobs.remove(getKey(job));
     }
 
     /**
@@ -117,6 +126,11 @@ public class TaskScheduler {
         } else {
             return null;
         }
+
+        // Check if its paused?
+        if(pausedJobs.contains(key))
+            // This job is paused, recursively find next one
+            return nextTask();
 
         // Get task list
         PriorityBlockingQueue<Task> taskList = mapClientToTaskList.get(key);

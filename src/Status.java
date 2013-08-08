@@ -5,5 +5,6 @@ public enum Status {
     NOT_STARTED,
     STARTED,
     COMPLETED,
-    KILLED
+    KILLED,
+    PAUSED
 }

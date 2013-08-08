@@ -43,6 +43,30 @@ public class Cluster extends Thread {
         }
     }
 
+    public synchronized void resumeJob(Job jobToResume) {
+        if(jobs.contains(jobToResume)) {
+            taskScheduler.resumeJob(jobToResume);
+            Job[] allJobs = getJobs();
+            for(Job job: allJobs) {
+                if(job.equals(jobToResume))
+                    job.resume();
+            }
+        }
+    }
+
+    public synchronized void pauseJob(Job jobToPause) {
+            if(jobs.contains(jobToPause)) {
+            taskScheduler.pauseJob(jobToPause);
+            Job[] allJobs = getJobs();
+            for(Job job: allJobs) {
+                if(job.equals(jobToPause))
+                    job.pause();
+            }
+        } else {
+            System.out.println("Job does not exist - " + jobToPause);
+        }
+    }
+
     public synchronized  void lowerJob(Job jobToLower) {
         if(jobs.contains(jobToLower)) {
             taskScheduler.lowerJob(jobToLower);

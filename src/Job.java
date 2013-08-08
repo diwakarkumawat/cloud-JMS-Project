@@ -55,6 +55,14 @@ public class Job implements Comparable<Job> {
             priority = Priority.HIGH;
     }
 
+    public void pause() {
+        status = Status.PAUSED;
+    }
+
+    public void resume() {
+        status = Status.STARTED;
+    }
+
     public void lowerPriority() {
         if(priority.equals(Priority.HIGH))
             priority = Priority.EQUAL;
@@ -67,6 +75,9 @@ public class Job implements Comparable<Job> {
     }
 
     public boolean isComplete() {
+
+        if(status.equals(Status.PAUSED))
+            return false;
 
         if(status.equals(Status.KILLED))
             return true;
@@ -123,7 +134,7 @@ public class Job implements Comparable<Job> {
         float percentComplete = 100 * completed/size;
 
         StringBuffer sb = new StringBuffer();
-        if(status.equals(Status.KILLED) || status.equals(Status.COMPLETED))
+        if(status.equals(Status.KILLED) || status.equals(Status.COMPLETED) || status.equals(Status.PAUSED))
             sb.append(status.name());
         else
             sb.append(" " + percentComplete + "%");

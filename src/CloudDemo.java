@@ -35,17 +35,31 @@ public class CloudDemo {
             continue;
         }
 
-        if(command < 0 || command > 6) {
+        if(command < 0 || command > 8) {
             print("Invalid Command. Try Again.");
             continue;
         }
 
-        if(command == 6) {
+        if(command == 8) {
             //print(cluster.getClusterLoad());
             cluster.printLoad();
         }
 
         if(command == 5) {
+            print("Enter Job to Pause {ClientName JobName}");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.pauseJob(new Job(stk.nextToken(), stk.nextToken(), null));
+        }
+
+        if(command == 6) {
+            print("Enter Job to Resume {ClientName JobName}");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.resumeJob(new Job(stk.nextToken(), stk.nextToken(), null));
+        }
+
+        if(command == 7) {
             progress();
         }
 
@@ -109,8 +123,10 @@ public class CloudDemo {
         print("2. Kill an existing Job");
         print("3. Lower Job Priority");
         print("4. Raise Job Priority");
-        print("5. Print Progress");
-        print("6. Print Cluster Load");
+        print("5. Pause a Job");
+        print("6. Resume a Job");
+        print("7. Print Progress");
+        print("8. Print Cluster Load");
         print("-------------------------------------------------------");
     }
 }
