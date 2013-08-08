@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created with IntelliJ IDEA.
@@ -15,6 +16,7 @@ public class Job implements Comparable<Job> {
     private Status status = Status.NOT_STARTED;
     private Priority priority = Priority.EQUAL;
     private List<Task> jobTasks = new ArrayList<Task>();
+    private static Random random = new Random(78938193L);
 
     public static int TASK_LENGTH = 10; // 10 second tasks
 
@@ -24,11 +26,41 @@ public class Job implements Comparable<Job> {
         if(jobWorkLoad == null) // for non-work jobs, it can be missing
             jobWorkLoad = 0l;
         this.jobWorkLoad = jobWorkLoad;
-        long taskCount = jobWorkLoad/10;
         // Create Tasks
-        for(int i=0;i<taskCount;i++) {
-            Task task = new Task(clientName, jobName, i, 10L);
+        long assignedWorkLoad = 0;
+        int i = 1;
+        for(;assignedWorkLoad<jobWorkLoad;) {
+            long nextExpLoad = nextExpDistibutedLoad();
+            if(nextExpLoad > (jobWorkLoad - assignedWorkLoad))
+                nextExpLoad = jobWorkLoad - assignedWorkLoad;
+            Task task = new Task(clientName, jobName, i++, nextExpLoad);
+            assignedWorkLoad += task.getTaskWorkLoad();
             jobTasks.add(task);
+        }
+    }
+
+    /**
+     * Return real number uniformly in [0, 1).
+     */
+    public static double uniform() {
+        return random.nextDouble();
+    }
+
+    /**
+     * Return a real number from an exponential distribution with rate lambda.
+     */
+    public static double exp(double lambda) {
+        return -Math.log(1 - uniform()) / lambda;
+    }
+
+    public static long nextExpDistibutedLoad() {
+        long random = Math.round(10 * exp(1));
+        return random > 0 ? random : 1;
+    }
+
+    public static void main(String [] args) throws Exception {
+        for(int i=100;i<1000;i++) {
+            System.out.println(nextExpDistibutedLoad());
         }
     }
 

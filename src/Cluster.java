@@ -104,10 +104,10 @@ public class Cluster extends Thread {
 
     public void printLoad() {
         System.out.println();
-        System.out.printf("%-50s %20s %n", "Node-Id.Client.JobName.TaskId", "Percent Complete");
+        System.out.printf("%-50s %70s %20s %n", "Node-Id.Client.JobName.TaskId", "Node Work Queue", "Percent Complete");
 
         for(Node node: nodes) {
-            System.out.printf("%-50s %20s %n", node.getNodeLoad(), node.getPercentComplete());
+            System.out.printf("%-50s %70s %20s %n", node.getNodeLoad(), node.getNodeWorkLoad(), node.getPercentComplete());
         }
     }
 

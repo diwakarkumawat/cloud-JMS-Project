@@ -28,6 +28,17 @@ public class Node implements Runnable {
         return sb.toString();
     }
 
+    public String getNodeWorkLoad() {
+        StringBuffer sb = new StringBuffer();
+        if(task != null) {
+            long load = Math.round(task.getTaskWorkLoad() * (1-percentComplete/100));
+            for(int i=0;i< load;i++)
+                sb.append(".");
+        }
+
+        return sb.toString();
+    }
+
     public String getPercentComplete() {
         return String.valueOf(percentComplete) + "%";
     }
