@@ -58,7 +58,7 @@ public class Node implements Runnable {
 
                     try {
                         for(int i=0;i<size;i++) {
-                            Thread.sleep(1000);
+                            Thread.sleep(500);
                             percentComplete = 100 * i/size;
                         }
                         task.setComplete();

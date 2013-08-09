@@ -1,3 +1,5 @@
+import java.io.FileWriter;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -18,6 +20,8 @@ public class Cluster extends Thread {
     private List<Node> nodes = new ArrayList<Node>();
     private PriorityBlockingQueue<Job> jobs = new PriorityBlockingQueue<Job>();
     private TaskScheduler taskScheduler = new TaskScheduler();
+    private PrintWriter outJobs;
+    private PrintWriter outNodes;
 
     public Cluster() {
         executorService = Executors.newFixedThreadPool(CLUSTER_SIZE);
@@ -26,6 +30,13 @@ public class Cluster extends Thread {
         for(int i=0;i<CLUSTER_SIZE;i++) {
             nodes.add(new Node("Node-" + i, taskScheduler));
             executorService.execute(nodes.get(i));
+        }
+
+        try {
+            outJobs = new PrintWriter(new FileWriter("cloud_jobs.txt", true));
+            outNodes = new PrintWriter(new FileWriter("cloud_nodes.txt", true));
+        }catch(Exception x) {
+            x.printStackTrace();
         }
         System.out.println("Cluster Initialized with Size - " + CLUSTER_SIZE);
     }
@@ -45,22 +56,24 @@ public class Cluster extends Thread {
 
     public synchronized void resumeJob(Job jobToResume) {
         if(jobs.contains(jobToResume)) {
-            taskScheduler.resumeJob(jobToResume);
+//            taskScheduler.resumeJob(jobToResume);
             Job[] allJobs = getJobs();
             for(Job job: allJobs) {
                 if(job.equals(jobToResume))
-                    job.resume();
+//                    job.resume();
+                    taskScheduler.resumeJob(job);
             }
         }
     }
 
     public synchronized void pauseJob(Job jobToPause) {
             if(jobs.contains(jobToPause)) {
-            taskScheduler.pauseJob(jobToPause);
+            //taskScheduler.pauseJob(jobToPause);
             Job[] allJobs = getJobs();
             for(Job job: allJobs) {
                 if(job.equals(jobToPause))
-                    job.pause();
+                    taskScheduler.pauseJob(job);
+                    //job.pause();
             }
         } else {
             System.out.println("Job does not exist - " + jobToPause);
@@ -132,7 +145,19 @@ public class Cluster extends Thread {
     public void run() {
         do {
             try {
-                Thread.sleep(1000);
+                Thread.sleep(250);
+                outNodes.printf("%-40s %60s %20s %n", "Node-Id.Client.JobName.TaskId", "Node Work Queue", "Percent Complete");
+                for(Node node: nodes) {
+                    outNodes.printf("%-40s %60s %20s %n", node.getNodeLoad(), node.getNodeWorkLoad(), node.getPercentComplete());
+                }
+
+                Job[] jobs = getJobs();
+                outJobs.printf("%-40s %100s %20s %n", "Client.Job.WorkLoad.Status.Priority", "Progress", "Percent Complete");
+
+                for(Job job: jobs) {
+                    outJobs.printf("%-40s %100s %20s %n", job.getJobDetail(), job.getProgress(), job.getPercentComplete());
+                }
+
             } catch(InterruptedException ix) {
                 ix.printStackTrace();
             }

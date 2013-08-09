@@ -11,7 +11,7 @@ import java.util.concurrent.PriorityBlockingQueue;
 public class TaskScheduler {
     private Map<String, PriorityBlockingQueue<Task>> mapClientToTaskList = new HashMap<String, PriorityBlockingQueue<Task>>();
     private List<String> keys = new ArrayList<String>();
-    private List<String> pausedJobs = new ArrayList<String>();
+    private Map<String, PriorityBlockingQueue<Task>> pausedJobs = new HashMap<String, PriorityBlockingQueue<Task>>();
     private Map<String, Priority> priorityMap =  new HashMap<String, Priority>();
     private Map<Priority, List<String>> jobsByPriorityMap = new HashMap<Priority, List<String>>();
     private static int index = 0;
@@ -27,6 +27,10 @@ public class TaskScheduler {
      * @param job
      */
     public synchronized  void raiseJob(Job job) {
+        // can't change priority for a paused job
+        if(pausedJobs.containsKey(getKey(job)))
+            return;
+
         Priority priority = priorityMap.get(getKey(job));
         if(priority.equals(Priority.HIGH)) {
             // can't go higher then that
@@ -44,11 +48,19 @@ public class TaskScheduler {
     }
 
     public synchronized void pauseJob(Job job) {
-        pausedJobs.add(getKey(job));
+        pausedJobs.put(getKey(job), mapClientToTaskList.get(getKey(job)));
+        mapClientToTaskList.remove(getKey(job));
+        priorityMap.remove(getKey(job));
+        jobsByPriorityMap.get(job.getPriority()).remove(getKey(job));
+        job.pause();
     }
 
     public synchronized void resumeJob(Job job) {
+        mapClientToTaskList.put(getKey(job), pausedJobs.get(getKey(job)));
         pausedJobs.remove(getKey(job));
+        priorityMap.put(getKey(job), job.getPriority());
+        jobsByPriorityMap.get(job.getPriority()).add(getKey(job));
+        job.resume();
     }
 
     /**
@@ -56,6 +68,10 @@ public class TaskScheduler {
      * @param job
      */
     public synchronized void lowerJob(Job job) {
+        // can't change priority for a paused job
+        if(pausedJobs.containsKey(getKey(job)))
+            return;
+
         Priority priority = priorityMap.get(getKey(job));
         if(priority.equals(Priority.HIGH)) {
             priorityMap.remove(getKey(job));
@@ -126,11 +142,6 @@ public class TaskScheduler {
         } else {
             return null;
         }
-
-        // Check if its paused?
-        if(pausedJobs.contains(key))
-            // This job is paused, recursively find next one
-            return nextTask();
 
         // Get task list
         PriorityBlockingQueue<Task> taskList = mapClientToTaskList.get(key);
