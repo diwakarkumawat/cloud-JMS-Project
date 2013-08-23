@@ -35,12 +35,12 @@ public class CloudDemo {
             continue;
         }
 
-        if(command < 0 || command > 8) {
+        if(command < 0 || command > 9) {
             print("Invalid Command. Try Again.");
             continue;
         }
 
-        if(command == 8) {
+        if(command == 9) {
             //print(cluster.getClusterLoad());
             cluster.printLoad();
         }
@@ -60,6 +60,14 @@ public class CloudDemo {
         }
 
         if(command == 7) {
+            print("Enter Job And GuaranteedRate(%) {ClientName JobName 25/50/75/100}");
+            input = br.readLine();
+            StringTokenizer stk = new StringTokenizer(input);
+            cluster.rateAssignJob(new Job(stk.nextToken(), stk.nextToken(), null), stk.nextToken());
+        }
+
+
+        if(command == 8) {
             progress();
         }
 
@@ -125,8 +133,9 @@ public class CloudDemo {
         print("4. Raise Job Priority");
         print("5. Pause a Job");
         print("6. Resume a Job");
-        print("7. Print Progress");
-        print("8. Print Cluster Load");
+        print("7. Rate Guarantee A Job");
+        print("8. Print Progress");
+        print("9. Print Cluster Load");
         print("-------------------------------------------------------");
     }
 }

@@ -109,6 +109,33 @@ public class TaskScheduler {
         }
     }
 
+    public synchronized Task nextTask(Job job) {
+
+        if(null == job)
+            return null;
+
+        String key = getKey(job);
+
+        // Get task list
+        PriorityBlockingQueue<Task> taskList = mapClientToTaskList.get(key);
+
+        if(taskList == null || taskList.isEmpty()) {
+            // Completed.
+            keys.remove(key);
+            index--;
+            mapClientToTaskList.remove(key);
+            // remove from priority maps
+            Priority priority = priorityMap.get(key);
+            if(priority != null)
+                jobsByPriorityMap.get(priority).remove(key);
+            priorityMap.remove(key);
+            return null;
+        }
+
+        // Remove the task
+        return taskList.remove();
+    }
+
     /**
      * Return the new Task in a fair Manner.
      * @return next Task

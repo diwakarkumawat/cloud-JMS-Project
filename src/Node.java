@@ -5,17 +5,20 @@ import java.util.concurrent.PriorityBlockingQueue;
  */
 public class Node implements Runnable {
     private String name = null;
+
+    // Job which is guaranteed this Node exclusively
+    private Job rateGuaranteedJob = null;
+
     private Task task = null;
-//    private PriorityBlockingQueue<Task> taskQueue = new PriorityBlockingQueue<Task>();
     private TaskScheduler taskScheduler;
     public Node(String s, TaskScheduler taskScheduler) {
         this.name = s;
         this.taskScheduler = taskScheduler;
     }
 
-    public synchronized void addTask(Task task) {
-//        taskQueue.add(task);
-//        notifyAll();
+
+    public void addExclusiveJob(Job job) {
+        rateGuaranteedJob = job;
     }
 
     public String getNodeLoad() {
@@ -47,31 +50,36 @@ public class Node implements Runnable {
 
     @Override
     public void run() {
-
         do {
-
-            // Keep working on tasks
+        // Keep working on tasks
+            if(null != rateGuaranteedJob)
+                task = taskScheduler.nextTask(rateGuaranteedJob);
+            else
                 task = taskScheduler.nextTask();
-                if(task != null && !task.isComplete()) {
-                    percentComplete = 0;
-                    long size = task.getTaskWorkLoad();
 
-                    try {
-                        for(int i=1;i<=size;i++) {
-                            Thread.sleep(1000);
-                            percentComplete = 100 * i/(size);
-                        }
-                        task.setComplete();
-                    }catch(InterruptedException ix) {
-                        System.out.println(ix);
-                    }
-                }
-
-            try {
-                Thread.sleep(200);
-            }catch(InterruptedException ix) {
-                ix.printStackTrace();
+            if(null == task) {
+                addExclusiveJob(null);
             }
+
+            if(task != null && !task.isComplete()) {
+                percentComplete = 0;
+                long size = task.getTaskWorkLoad();
+
+                try {
+                    for(int i=1;i<=size;i++) {
+                        Thread.sleep(1000);
+                        percentComplete = 100 * i/(size);
+                    }
+                    task.setComplete();
+                }catch(InterruptedException ix) {
+                    System.out.println(ix);
+                }
+            }
+        try {
+            Thread.sleep(200);
+        }catch(InterruptedException ix) {
+            ix.printStackTrace();
+        }
         }while(true);
     }
 }

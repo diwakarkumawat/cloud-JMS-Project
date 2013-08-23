@@ -66,6 +66,32 @@ public class Cluster extends Thread {
         }
     }
 
+    public synchronized void rateAssignJob(Job rateJob, String percentRate) {
+        Integer rate = Integer.parseInt(percentRate);
+
+        if(rate <= 25) {
+            // Assign 1 node
+            nodes.get(0).addExclusiveJob(rateJob);
+        } else if(rate <= 50) {
+            // Assign 2 nodes
+            nodes.get(0).addExclusiveJob(rateJob);
+            nodes.get(1).addExclusiveJob(rateJob);
+        } else if(rate <= 75) {
+            // Assign 3 nodes
+            nodes.get(0).addExclusiveJob(rateJob);
+            nodes.get(1).addExclusiveJob(rateJob);
+            nodes.get(2).addExclusiveJob(rateJob);
+
+        } else if(rate <= 100) {
+            // Assign 4 nodes.
+            nodes.get(0).addExclusiveJob(rateJob);
+            nodes.get(1).addExclusiveJob(rateJob);
+            nodes.get(2).addExclusiveJob(rateJob);
+            nodes.get(3).addExclusiveJob(rateJob);
+
+        }
+    }
+
     public synchronized void pauseJob(Job jobToPause) {
             if(jobs.contains(jobToPause)) {
             //taskScheduler.pauseJob(jobToPause);
